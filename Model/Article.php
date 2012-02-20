@@ -24,14 +24,8 @@ class Article {
 		$this->viewCount = 0;
 	}
 
-	public function setStatus($status) {
-		if ($status !== static::STATUS_DRAFT && $status !== static::STATUS_DRAFT) {
-			throw new \InvalidArgumentException('Invalid status value: ' . $status);
-		}
-		$this->status = $status;
-	}
-
-	public function setPublishDate(DateTime $date) {
+	public function setPublished(DateTime $date) {
+		$this->status = static::STATUS_DRAFT;
 		$this->publishDate = $date;
 	}
 

@@ -26,8 +26,7 @@ class ArticleController {
 
 	private function publish($id) {
 		$article = $this->entityManager->find('Article', $id);
-		$article->setPublishDate(new DateTime());
-		$article->setStatus(Article::STATUS_PUBLISHED);
+		$article->setPublished(new DateTime());
 		$this->entityManager->flush();
 	}
 
