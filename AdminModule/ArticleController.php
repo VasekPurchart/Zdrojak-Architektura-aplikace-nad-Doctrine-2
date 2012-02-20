@@ -13,15 +13,7 @@ class ArticleController {
 	}
 
 	private function getTopArticles() {
-		return $this->entityManager->createQueryBuilder()
-			->select('a')
-			->from('Article', 'a')
-			->where('a.status = ?1')
-			->orderBy('a.viewCount DESC')
-			->setMaxResults($this->topArticlesCount)
-			->getQuery()
-			->setParameter(1, Article::STATUS_PUBLISHED)
-			->getResult();
+		return $this->entityManager->getRepository('Article')->findTopArticles($this->topArticlesCount);
 	}
 
 	private function publish($id) {
