@@ -2,29 +2,23 @@
 
 class ArticleController {
 
-	/** @var Doctrine\ORM\EntityManager */
-	private $entityManager;
-
-	/** @var ArticleService */
-	private $articleService;
+	/** @var ArticleFacade */
+	private $articleFacade;
 
 	/** @var int */
 	private $topArticlesCount;
 
-	public function __construct(\Doctrine\ORM\EntityManager $entityManager, ArticleService $articleService, $topArticlesCount) {
+	public function __construct(ArticleFacade $articleFacade, $topArticlesCount) {
 		// mapování do private proměnných
 	}
 
 	private function getTopArticles() {
 		$now = new DateTime();
-		$lastMonthArticles = $this->entityManager->getRepository('Article')->findArticlesSince($now->sub(new DateInterval('P1M')));
-		return $this->articleService->getTopArticlesByMagic($lastMonthArticles, $this->topArticlesCount);
+		return $this->articleFacade->getTopArticles($now->sub(new DateInterval('P1M')), $this->topArticlesCount);
 	}
 
 	private function publish($id) {
-		$article = $this->entityManager->find('Article', $id);
-		$article->setPublished(new DateTime());
-		$this->entityManager->flush();
+		$this->articleFacade->publish($id, new DateTime());
 	}
 
 	// další obslužné metody
