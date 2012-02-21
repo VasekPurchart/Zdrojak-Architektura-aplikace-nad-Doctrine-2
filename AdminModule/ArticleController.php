@@ -5,15 +5,20 @@ class ArticleController {
 	/** @var Doctrine\ORM\EntityManager */
 	private $entityManager;
 
+	/** @var ArticleService */
+	private $articleService;
+
 	/** @var int */
 	private $topArticlesCount;
 
-	public function __construct(\Doctrine\ORM\EntityManager $entityManager, $topArticlesCount) {
+	public function __construct(\Doctrine\ORM\EntityManager $entityManager, ArticleService $articleService, $topArticlesCount) {
 		// mapování do private proměnných
 	}
 
 	private function getTopArticles() {
-		return $this->entityManager->getRepository('Article')->findTopArticles($this->topArticlesCount);
+		$now = new DateTime();
+		$lastMonthArticles = $this->entityManager->getRepository('Article')->findArticlesSince($now->sub(new DateInterval('P1M')));
+		return $this->articleService->getTopArticlesByMagic($lastMonthArticles, $this->topArticlesCount);
 	}
 
 	private function publish($id) {
